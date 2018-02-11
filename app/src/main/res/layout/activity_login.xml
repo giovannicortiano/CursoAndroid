@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="com.whatsclone.giovanni.whatsclone.Activitys.LoginActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/larguraLogo"
+        android:layout_height="@dimen/alturaLogo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        app:srcCompat="@drawable/logo"
+        tools:layout_editor_absoluteX="92dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <EditText
+        android:id="@+id/edtNomeId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/edtTelefoneId"
+        android:layout_alignLeft="@+id/edtCodigoPaisId"
+        android:layout_alignRight="@+id/edtTelefoneId"
+        android:layout_alignStart="@+id/edtCodigoPaisId"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="29dp"
+        android:ems="10"
+        android:hint="Digite seu nome."
+        android:inputType="textPersonName"
+        android:textColor="@color/TextColorPrincipal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="214dp" />
+
+    <EditText
+        android:id="@+id/edtCodigoPaisId"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnCadastrarId"
+        android:layout_alignStart="@+id/btnCadastrarId"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="+55"
+        android:inputType="number"
+        android:textColor="@color/TextColorPrincipal"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="272dp" />
+
+    <EditText
+        android:id="@+id/edtCodigoAreaId"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/edtCodigoPaisId"
+        android:layout_toRightOf="@+id/edtCodigoPaisId"
+        android:ems="10"
+        android:hint="(41)"
+        android:inputType="number"
+        android:textColor="@color/TextColorPrincipal"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="272dp" />
+
+    <EditText
+        android:id="@+id/edtTelefoneId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnCadastrarId"
+        android:layout_alignRight="@+id/btnCadastrarId"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/edtCodigoAreaId"
+        android:layout_toRightOf="@+id/edtCodigoAreaId"
+        android:ems="10"
+        android:hint="99999-9999"
+        android:inputType="number"
+        android:textColor="@color/TextColorPrincipal"
+        tools:layout_editor_absoluteX="151dp"
+        tools:layout_editor_absoluteY="272dp" />
+
+    <Button
+        android:id="@+id/btnCadastrarId"
+        android:layout_width="350dp"
+        android:layout_height="43dp"
+        android:layout_below="@+id/edtCodigoPaisId"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/botaoCadastrar"
+        android:textColor="@color/TextColorPrincipal"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="348dp" />
+</RelativeLayout>
