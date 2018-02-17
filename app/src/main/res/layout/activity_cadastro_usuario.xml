@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:gravity="center_vertical|center_horizontal"
+    android:padding="16dp"
+    tools:context="com.whatsclone.giovanni.whatsclone.Activitys.CadastroUsuarioActivity">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        app:srcCompat="@drawable/usuario"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="44dp" />
+
+    <EditText
+        android:id="@+id/edtNomeNovoId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView3"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Digite seu nome."
+        android:inputType="textPersonName"
+        android:textColor="@color/TextColorPrincipal" />
+
+    <EditText
+        android:id="@+id/edtEmailNovoId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edtNomeNovoId"
+        android:layout_marginTop="11dp"
+        android:ems="10"
+        android:hint="Digite seu e-mail."
+        android:inputType="textEmailAddress"
+        android:textColor="@color/TextColorPrincipal" />
+
+    <EditText
+        android:id="@+id/edtSenhaNovoId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edtEmailNovoId"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="Digite sua senha."
+        android:inputType="textPassword"
+        android:textColor="@color/TextColorPrincipal" />
+
+    <Button
+        android:id="@+id/btnCadastrarNovoId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edtSenhaNovoId"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimaryDark"
+        android:onClick="BtnCadastrarNovoOnClick"
+        android:text="Cadastrar"
+        android:textColor="@color/TextColorPrincipal" />
+
+</RelativeLayout>

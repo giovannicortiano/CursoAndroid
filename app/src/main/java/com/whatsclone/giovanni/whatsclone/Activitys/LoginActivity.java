@@ -1,123 +1,77 @@
 package com.whatsclone.giovanni.whatsclone.Activitys;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.rtoshiro.util.format.SimpleMaskFormatter;
-import com.github.rtoshiro.util.format.text.MaskTextWatcher;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.whatsclone.giovanni.whatsclone.Config.ConfiguracaoFireBase;
+import com.whatsclone.giovanni.whatsclone.Model.Usuario;
 import com.whatsclone.giovanni.whatsclone.R;
 import com.whatsclone.giovanni.whatsclone.helper.Permissao;
-import com.whatsclone.giovanni.whatsclone.helper.Preferencias;
-
-import java.util.Random;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText edtNome;
-    private EditText edtCodigoPais;
-    private EditText edtCodigoArea;
-    private EditText edtTelefone;
-    private Button   btnCadastrar;
-    private String[] PermissoesNecessarias = new String[]{android.Manifest.permission.SEND_SMS};
+    private EditText edtEmail;
+    private EditText edtSenha;
+    private TextView textCadastreSe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Permissao.ValidarPermissoes(this,PermissoesNecessarias);
+        VerificarSeUsuarioLogado();
         RecuperarViews();
-        DefinirMascaras();
-        btnCadastrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String TelefoneCompleto = edtCodigoPais.getText().toString() +
-                                          edtCodigoArea.getText().toString() +
-                                          edtTelefone.getText().toString();
-
-                TelefoneCompleto = TelefoneCompleto.replace("-","");
-
-                int iToken = new Random().nextInt(9999-1000)+1000;
-                String sToken = String.valueOf(iToken);
-                Preferencias preferencias = new Preferencias(getApplicationContext());
-                preferencias.SalvarUsuario(edtNome.getText().toString(),TelefoneCompleto,sToken);
-
-                if (EnviarSms(TelefoneCompleto,"Código de validação WhatsClone: " + sToken)){
-                    Intent intent = new Intent(LoginActivity.this,ValidacaoActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                else{
-                    Toast.makeText(LoginActivity.this, "Problema ao enviar SMS. Tente novamente.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     private void RecuperarViews(){
-        edtNome       = findViewById(R.id.edtNomeId);
-        edtCodigoPais = findViewById(R.id.edtCodigoPaisId);
-        edtCodigoArea = findViewById(R.id.edtCodigoAreaId);
-        edtTelefone   = findViewById(R.id.edtTelefoneId);
-        btnCadastrar  = findViewById(R.id.btnCadastrarId);
+        edtEmail       = findViewById(R.id.edtEmailId);
+        edtSenha       = findViewById(R.id.edtSenhaId);;
+        textCadastreSe = findViewById(R.id.textCadastre);
     }
 
-    private void DefinirMascaras(){
-        ///Mascaras
-        SimpleMaskFormatter mascaraTelefone = new SimpleMaskFormatter("NNNNN-NNNN");
-        MaskTextWatcher maskWatcherTelefone = new MaskTextWatcher(edtTelefone,mascaraTelefone);
 
-        SimpleMaskFormatter mascaraCodigoPais = new SimpleMaskFormatter("+NN");
-        MaskTextWatcher maskWatcherCodigoPais = new MaskTextWatcher(edtCodigoPais,mascaraCodigoPais);
+    public void AbrirActivityCadastroUsuario(View view){
+        Intent intent = new Intent(LoginActivity.this,CadastroUsuarioActivity.class);
+        startActivity(intent);
 
-        SimpleMaskFormatter mascaraCodigoArea = new SimpleMaskFormatter("NN");
-        MaskTextWatcher maskWatcherCodigoArea = new MaskTextWatcher(edtCodigoArea,mascaraCodigoArea);
-
-        edtTelefone.addTextChangedListener(maskWatcherTelefone);
-        edtCodigoPais.addTextChangedListener(maskWatcherCodigoPais);
-        edtCodigoArea.addTextChangedListener(maskWatcherCodigoArea);
     }
 
-    private boolean EnviarSms(String sTelefone, String sMensagem){
-        SmsManager Sms = SmsManager.getDefault();
-        try{
-            Sms.sendTextMessage(sTelefone,null,sMensagem,null,null);
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
+    public void ValidarLogin(View view) {
+        ConfiguracaoFireBase.getFireBaseAuth().signInWithEmailAndPassword(edtEmail.getText().toString(), edtSenha.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            AbrirTelaPrincipal();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Usuário ou senha inválidos.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void VerificarSeUsuarioLogado(){
+        if (ConfiguracaoFireBase.getFireBaseAuth().getCurrentUser() != null){
+            AbrirTelaPrincipal();
         }
     }
 
-    private  void AlertarValidacaoPermissao(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Permissões Negadas!");
-        builder.setMessage("Para usar o App é necesário aceitar as permissões.");
-        builder.setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-
-    public void onRequestPermissionsResult(int requestCode,String[]Permissions, int[]GrantResults){
-        super.onRequestPermissionsResult(requestCode,Permissions,GrantResults );
-        for (int resultado : GrantResults){
-            if (resultado == PackageManager.PERMISSION_DENIED){
-                AlertarValidacaoPermissao();
-            }
-        }
+    private void AbrirTelaPrincipal(){
+        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
